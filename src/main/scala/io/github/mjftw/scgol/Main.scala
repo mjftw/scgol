@@ -6,6 +6,6 @@ import cats.effect.{ExitCode, IO}
 object Main extends IOApp {
   def run(args: List[String]): IO[ExitCode] =
     for {
-      _ <- IO.println("Hello World!")
+      _ <- IO(println("Hello World!"))
     } yield ExitCode.Success
 }
