@@ -7,6 +7,17 @@ import io.github.mjftw.scgol.LifeState._
 case class Dimension(value: Int)
 case class Location(x: Int, y: Int)
 
+object Location {
+
+  implicit class LocationOps(xy: Location) {
+    def to(endXY: Location): List[Location] =
+      for {
+        xs <- List.range(xy.x, endXY.x + 1)
+        ys <- List.range(xy.y, endXY.y + 1)
+      } yield Location(xs, ys)
+  }
+}
+
 case class Grid(
     values: Map[Location, LifeState],
     height: Dimension,
@@ -19,22 +30,13 @@ object Grid {
     val values = (for {
       x <- List.range(0, width)
       y <- List.range(0, height)
-    } yield (x, y)).foldLeft(Map.empty[Location, LifeState])((m, xy) =>
-      m + (Location.tupled(xy) -> isAlive)
-    )
+    } yield Location(x, y)).foldLeft(Map.empty[Location, LifeState])((m, xy) => m + (xy -> isAlive))
 
     Grid(
       values,
       Dimension(width),
       Dimension(height)
     )
-  }
-  implicit class LocationOps(xy: Location) {
-    def to(endXY: Location): List[Location] =
-      for {
-        xs <- List.range(xy.x, endXY.x + 1)
-        ys <- List.range(xy.y, endXY.y + 1)
-      } yield Location(xs, ys)
   }
 
   implicit class GridOps(grid: Grid) {
