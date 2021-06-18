@@ -1,4 +1,4 @@
-lazy val CatsEffectVersion = "3.1.1"
+lazy val CatsEffectVersion = "2.5.1"
 lazy val ScalaTestVersion = "3.2.5"
 
 lazy val root = (project in file("."))
@@ -6,16 +6,7 @@ lazy val root = (project in file("."))
     organization := "io.github.mjftw",
     name := "scgol",
     version := "0.0.1-SNAPSHOT",
-    scalaVersion := "2.12.14",
-    scalacOptions := Seq(
-      "-deprecation",
-      "-encoding",
-      "UTF-8",
-      "-feature",
-      "-language:existentials",
-      "-language:higherKinds",
-      "-Ypartial-unification"
-    ),
+    scalaVersion := "2.13.4",
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect" % CatsEffectVersion,
       "org.scalatest" %% "scalatest" % ScalaTestVersion % Test

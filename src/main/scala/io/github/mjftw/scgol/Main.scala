@@ -1,11 +1,24 @@
 package io.github.mjftw.scgol
 
-import cats.effect.IOApp
-import cats.effect.{ExitCode, IO}
+import scala.annotation.tailrec
 
-object Main extends IOApp {
-  def run(args: List[String]): IO[ExitCode] =
-    for {
-      _ <- IO(println("Hello World!"))
-    } yield ExitCode.Success
+object Main {
+  def main(args: Array[String]): Unit = {
+    val boardSize = 50
+    val aliveProbability = 0.25
+    val turnPeriodMs = 300
+
+    val start = Game.random(boardSize, boardSize, aliveProbability)
+
+    @tailrec
+    def loop(game: Game, delayMs: Int): Game = {
+      println(game.board.asString())
+      Thread.sleep(delayMs)
+      loop(game.advance, delayMs)
+    }
+
+    loop(start, turnPeriodMs)
+
+    ()
+  }
 }

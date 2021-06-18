@@ -26,6 +26,22 @@ object Grid {
     )
   }
 
+  def random(width: Int, height: Int, aliveProbability: Double = 0.5): Grid = {
+    val values = (for {
+      x <- List.range(0, width)
+      y <- List.range(0, height)
+      isAlive = if (math.random() <= aliveProbability) Alive else Dead
+    } yield (Location(x, y) -> isAlive)).foldLeft(Map.empty[Location, LifeState])((m, xyAlive) =>
+      m + xyAlive
+    )
+
+    Grid(
+      values,
+      Height(width),
+      Width(height)
+    )
+  }
+
   implicit class GridOps(grid: Grid) {
     def minX: Int = 0
     def minY: Int = 0
