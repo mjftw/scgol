@@ -48,6 +48,14 @@ object Grid {
     def set(xy: Location, lifeState: LifeState): Grid =
       grid.copy(values = grid.values + (xy -> lifeState))
 
+    def asString(aliveChar: String = "■", deadChar: String = "☐"): String =
+      "\n" + (for {
+        x <- List.range(0, grid.width.value)
+        y <- List.range(0, grid.height.value)
+        separator = if (y == grid.maxY) "\n" else ""
+        cellChar = if (grid.get(Location(y, x)) == Alive) aliveChar else deadChar
+      } yield (cellChar + " " + separator)).mkString("")
+
     def livingInRange(fromXY: Location, toXY: Location): Int =
       (fromXY to toXY)
         .map(xy => grid.values(xy))
