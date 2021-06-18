@@ -2,26 +2,13 @@ package io.github.mjftw.scgol
 
 import cats.implicits._
 
-import io.github.mjftw.scgol.LifeState._
-
-case class Dimension(value: Int)
-case class Location(x: Int, y: Int)
-
-object Location {
-
-  implicit class LocationOps(xy: Location) {
-    def to(endXY: Location): List[Location] =
-      for {
-        xs <- List.range(xy.x, endXY.x + 1)
-        ys <- List.range(xy.y, endXY.y + 1)
-      } yield Location(xs, ys)
-  }
-}
+case class Height(value: Int)
+case class Width(value: Int)
 
 case class Grid(
-    values: Map[Location, LifeState],
-    height: Dimension,
-    width: Dimension
+    cells: Map[Location, LifeState],
+    height: Height,
+    width: Width
 )
 
 object Grid {
@@ -34,8 +21,8 @@ object Grid {
 
     Grid(
       values,
-      Dimension(width),
-      Dimension(height)
+      Height(width),
+      Width(height)
     )
   }
 
@@ -45,10 +32,10 @@ object Grid {
     def maxX: Int = grid.width.value - 1
     def maxY: Int = grid.height.value - 1
 
-    def get(xy: Location): LifeState = grid.values(xy)
+    def get(xy: Location): LifeState = grid.cells(xy)
 
     def set(xy: Location, lifeState: LifeState): Grid =
-      grid.copy(values = grid.values + (xy -> lifeState))
+      grid.copy(cells = grid.cells + (xy -> lifeState))
 
     def asString(aliveChar: String = "■", deadChar: String = "☐"): String =
       "\n" + (for {
@@ -60,7 +47,7 @@ object Grid {
 
     def livingInRange(fromXY: Location, toXY: Location): Int =
       (fromXY to toXY)
-        .map(xy => grid.values(xy))
+        .map(xy => grid.cells(xy))
         .filter(_ == Alive)
         .length
 

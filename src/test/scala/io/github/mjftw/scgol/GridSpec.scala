@@ -4,9 +4,10 @@ import org.scalatest.flatspec.AnyFlatSpec
 import io.github.mjftw.scgol.Grid
 import io.github.mjftw.scgol.Grid._
 import org.scalatest.matchers.should.Matchers
-import io.github.mjftw.scgol.Dimension
 import io.github.mjftw.scgol.{Alive, Dead}
 import io.github.mjftw.scgol.Location
+import io.github.mjftw.scgol.Height
+import io.github.mjftw.scgol.Width
 
 class GridSpec extends AnyFlatSpec with Matchers {
   "make" should "create a new grid" in {
@@ -20,8 +21,8 @@ class GridSpec extends AnyFlatSpec with Matchers {
           Location(2, 0) -> Dead,
           Location(2, 1) -> Dead
         ),
-        Dimension(3),
-        Dimension(2)
+        Height(3),
+        Width(2)
       )
     )
   }
