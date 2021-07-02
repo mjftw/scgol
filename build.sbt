@@ -1,6 +1,7 @@
 lazy val scalaTestV = "3.2.5"
 lazy val catsEffectV = "3.1.1"
 lazy val fs2V = "3.0.0"
+lazy val pureConfigV = "0.16.0"
 
 lazy val root = (project in file("."))
   .settings(
@@ -25,6 +26,7 @@ lazy val root = (project in file("."))
       "co.fs2" %% "fs2-core" % fs2V,
       "co.fs2" %% "fs2-io" % fs2V,
       "co.fs2" %% "fs2-reactive-streams" % fs2V,
+      "com.github.pureconfig" %% "pureconfig" % pureConfigV,
       "org.typelevel" %% "cats-effect-laws" % catsEffectV % Test,
       "org.scalatest" %% "scalatest" % scalaTestV % Test
     )
