@@ -17,7 +17,7 @@ object Main extends IOApp {
       advanceEvery: FiniteDuration
   ): IO[Either[Throwable, Unit]] =
     (for {
-      nextGame <- EitherT(IO(game.advance.asRight))
+      nextGame <- EitherT.pure[IO, Throwable]((game.advance))
       _ <- EitherT(view.update(game))
       _ <- EitherT(IO.sleep(advanceEvery).map(_.asRight))
       _ <- EitherT(runGame(nextGame, view, advanceEvery))
@@ -28,16 +28,12 @@ object Main extends IOApp {
       config <- EitherT(
         IO(ConfigSource.default.load[GameConfig].leftMap(e => new RuntimeException(e.toString())))
       )
-      model <- EitherT(
-        IO(
-          Game
-            .random(config.boardSize, config.boardSize, config.aliveProbability)
-            .asRight[Throwable]
-        )
+      game <- EitherT(
+        IO(Game.random(config.boardSize, config.boardSize, config.aliveProbability).asRight)
       )
-      view <- EitherT(IO(ConsoleView[IO].asRight[Throwable]))
-      _ <- EitherT(view.init(model))
-      _ <- EitherT(runGame(model, view, config.turnLength))
+      view <- EitherT.pure[IO, Throwable](ConsoleView[IO])
+      _ <- EitherT(view.init(game))
+      _ <- EitherT(runGame(game, view, config.turnLength))
     } yield ()).value
 
     program.flatMap {
